@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="LHShopFootTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oU9-lx-2nf">
+                        <rect key="frame" x="0.0" y="1" width="320" height="43"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l60-Ht-DoY">
+                                <rect key="frame" x="0.0" y="1" width="320" height="43"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="更多">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="moreBtnClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="rbo-Xk-lKi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="l60-Ht-DoY" firstAttribute="leading" secondItem="oU9-lx-2nf" secondAttribute="leading" id="03T-xR-7DS"/>
+                            <constraint firstAttribute="trailing" secondItem="l60-Ht-DoY" secondAttribute="trailing" id="22q-oV-gRs"/>
+                            <constraint firstAttribute="bottom" secondItem="l60-Ht-DoY" secondAttribute="bottom" id="WPM-J0-uM4"/>
+                            <constraint firstItem="l60-Ht-DoY" firstAttribute="top" secondItem="oU9-lx-2nf" secondAttribute="top" id="cfI-KM-KYZ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="oU9-lx-2nf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="2em-7o-sNn"/>
+                    <constraint firstAttribute="bottom" secondItem="oU9-lx-2nf" secondAttribute="bottom" id="HKi-vt-cYr"/>
+                    <constraint firstAttribute="trailing" secondItem="oU9-lx-2nf" secondAttribute="trailing" id="Nzm-3n-Oic"/>
+                    <constraint firstItem="oU9-lx-2nf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="gpc-bZ-2eo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="moreBtn" destination="l60-Ht-DoY" id="Prk-Xj-Psw"/>
+            </connections>
+            <point key="canvasLocation" x="140" y="290"/>
+        </tableViewCell>
+    </objects>
+</document>

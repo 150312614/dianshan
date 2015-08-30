@@ -1,0 +1,22 @@
+//
+//  ds04.pch
+//  生活圈项目
+//
+//  Created by 赖文辉 on 15/8/9.
+//  Copyright (c) 2015年 赖文辉. All rights reserved.
+//
+
+#ifndef ______ds04_pch
+#define ______ds04_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "Constant.h"
+#import "LHFactory.h"
+#import "LHHomeModel.h"
+#import "UIImageView+LHWebImageView.h"
+#import "LHFunction.h"
+#import "LHHTTPClient.h"
+#import "AppDelegate.h"
+
+#endif

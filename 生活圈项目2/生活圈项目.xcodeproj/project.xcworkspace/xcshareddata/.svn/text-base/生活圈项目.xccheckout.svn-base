@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>1A0F69B1-5533-4182-8715-37E7641713AA</string>
+	<key>IDESourceControlProjectName</key>
+	<string>生活圈项目</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B9D5AEB813DEB7A4F68BB0168772242A98058086</key>
+		<string>https://github.com/plzslience/plzslience.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>生活圈项目/生活圈项目.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B9D5AEB813DEB7A4F68BB0168772242A98058086</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/plzslience/plzslience.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B9D5AEB813DEB7A4F68BB0168772242A98058086</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B9D5AEB813DEB7A4F68BB0168772242A98058086</string>
+			<key>IDESourceControlWCCName</key>
+			<string>plzslience</string>
+		</dict>
+	</array>
+</dict>
+</plist>

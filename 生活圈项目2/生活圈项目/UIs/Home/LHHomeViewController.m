@@ -1,0 +1,323 @@
+//
+//  LHHomeViewController.m
+//  生活圈项目
+//
+//  Created by 赖文辉 on 15/8/9.
+//  Copyright (c) 2015年 赖文辉. All rights reserved.
+//
+
+#import "LHHomeViewController.h"
+#import "LHTabBarBaseViewController.h"
+#import "MD5.h"
+#import "AFNetworking.h"
+#import "LHFunction.h"
+#import "LHHTTPClient.h"
+#import "LHHomeModel.h"
+#import "LHLocationManage.h"
+#import "LHAdsTableViewCell.h"
+#import "LHGroupTableViewCell.h"
+#import "LHGuessTableViewCell.h"
+#import "LHFamousTableViewCell.h"
+#import "LHShopDetailViewController.h"
+#import "LHLoginViewController.h"
+
+@interface LHHomeViewController ()<UITableViewDelegate,UITableViewDataSource,LHFamousTableViewCellDelegate>
+
+@property (nonatomic,strong) LHHomeModel *home;
+@property (nonatomic,strong) CLLocation *location;
+@property (nonatomic,strong) LHAdsTableViewCell *header;
+
+
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+
+@end
+
+
+@implementation LHHomeViewController
+
+static NSString *ID = @"LHGroupTableViewCell";
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    //去除留白
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    
+    self.leftBtn.hidden = YES;
+    //创建headerView
+    _header = [[NSBundle mainBundle] loadNibNamed:@"LHAdsTableViewCell" owner:self options:nil].lastObject;
+    _header.frame = CGRectMake(0, 0, kUIScreenWidth, 170);
+    _tableView.tableHeaderView = _header;
+    
+    self.tableView.showsVerticalScrollIndicator = NO;
+    //设置标题
+    self.titleLabel.text = @"首页";
+    
+    
+    
+    //定位功能
+    [LHLocationManage getLocationSuccess:^(CLLocation *locat) {
+        self.location = locat;
+        [self getData];
+        
+    } failed:^(NSError *error) {
+        
+        self.location = [[CLLocation alloc] initWithLatitude:36.06 longitude:120.38];
+        [self getData];
+        
+    }];
+  
+    
+    
+}
+
+//获得数据
+- (void)getData
+{
+    //参数
+    NSMutableDictionary *prarm = [NSMutableDictionary dictionary];
+    [prarm setObject:@"120.38" forKey:@"lon"];
+    [prarm setObject:@"36.06" forKey:@"lat"];
+    
+    [prarm setObject:[LHFunction getTimeScamp] forKey:@"time"];
+    
+    
+    NSArray *arr = @[APP_ID,prarm[@"lon"],prarm[@"lat"],prarm[@"time"],APP_IDENGER];
+    [prarm setObject:[LHFunction md5StringFromArray:arr] forKey:@"sign"];
+    
+    [prarm setObject:APP_ID forKey:@"app_id"];
+    
+    [LHHTTPClient LHGET:kURLGETHomeInfo parameters:prarm successBlcok:^(id data) {
+//        NSLog(@"%@",data);
+        
+        self.home = [[LHHomeModel alloc] initWithDictionary:data error:nil];
+        
+        _header.list = _home.focus;
+        
+        [self.tableView reloadData];
+        
+    } failureBlcok:^(NSError *error) {
+        NSLog(@"%@",error);
+        
+        
+    } errorBlcok:^(id error) {
+        NSLog(@"%@",error);
+        
+        
+    }];
+    
+}
+
+//推送方法
+//- (IBAction)pushMethord:(id)sender {
+//    
+//    LHShopViewController *shop = [[LHShopViewController alloc] init];
+//    
+//    [self.navigationController pushViewController:shop animated:YES];
+//    
+//    LHTabBarBaseViewController *tab =  (LHTabBarBaseViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+//    
+//    [tab tabBarHidden:YES];
+//    
+//}
+
+
+#pragma mark -UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 1;
+    }
+    else if(section == 2)
+    {
+        return self.home.guess.list.count;
+    }
+    else if (section == 1)
+    {
+//        NSLog(@"---------famous%ld",self.home.famous.list.count);
+        return 1;
+    }
+    return 1;
+    
+}
+//返回cell
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        LHGroupTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+        
+        if (cell == nil) {
+            cell = [[[UINib nibWithNibName:@"LHGroupTableViewCell" bundle:nil] instantiateWithOwner:self options:nil] lastObject];
+        }
+        
+//        NSLog(@"----------%@",self.home.group);
+        cell.list = self.home.group;
+        
+        return cell;
+    }
+    else if (indexPath.section == 1) {
+        LHFamousTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHFamousTableViewCell"];
+        
+        if (cell == nil) {
+            cell = [[[UINib nibWithNibName:@"LHFamousTableViewCell" bundle:nil] instantiateWithOwner:self options:nil] lastObject];
+            
+            cell.delegate = self;
+        }
+        
+        
+        cell.list = self.home.famous;
+        
+        return cell;
+    }
+    else if (indexPath.section == 2) {
+        LHGuessTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHGuessTableViewCell"];
+        
+        if (cell == nil) {
+            cell = [[[UINib nibWithNibName:@"LHGuessTableViewCell" bundle:nil] instantiateWithOwner:self options:nil] lastObject];
+        }
+        
+      
+        cell.model = self.home.guess.list[indexPath.row];
+        
+        return cell;
+    }
+    
+    return nil;
+}
+
+
+#pragma mark -UITableViewDelegate
+//设置cell的高度
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        return 355 / 2.0;
+    }
+    if (indexPath.section == 1) {
+        return 400 / 2.0;
+    }
+    return 100;
+}
+
+
+
+
+//设置headerViewgaodu
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0;
+    }
+   
+    return kTableViewHeaderHight;
+    
+    
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    //创建View
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kUIScreenWidth, kTableViewHeaderHight)];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    //上面的分隔线
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kUIScreenWidth, 6)];
+    line.backgroundColor = [UIColor lightGrayColor];
+    [view addSubview:line];
+    
+    //创建标题
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10,6, 200, kTableViewHeaderHight - 6 - 0.5)];
+    
+    //设置文字
+    if (section == 1)
+    {
+        label.text = @"名店推荐";
+    }
+    else if(section == 2)
+    {
+        label.text = @"猜你喜欢";
+    }
+    
+    //设置状态
+    label.textColor = [UIColor redColor];
+    label.textAlignment = NSTextAlignmentLeft;
+    label.font = [UIFont fontWithName:@"Menlo" size:20];
+    
+    [view addSubview:label];
+    
+    
+    
+    //创建下方的分隔线
+    UIView *buttomLine = [[UIView alloc] initWithFrame:CGRectMake(0, kTableViewHeaderHight - 0.5, kUIScreenWidth, 0.5)];
+    buttomLine.backgroundColor = [UIColor lightGrayColor];
+    [view addSubview:buttomLine];
+    
+    
+    return view;
+}
+
+
+
+//点击cell
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"--%@",indexPath);
+    
+}
+
+
+#pragma mark - m LHFamousTableViewCellDelegate
+
+- (void)didLHFamousTableViewCellClickItem:(NSIndexPath *)indexPath
+{
+    
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    LHShopDetailViewController *shop = [sb instantiateViewControllerWithIdentifier:@"LHShopDetailViewController"];
+    
+    LHFamousModel *model = self.home.famous.list[indexPath.row];
+    //传递商家行情
+    [shop.prar setObject:self.location forKey:@"location"];
+    
+    [shop.prar setObject:[NSString stringWithFormat:@"%d",model.id] forKey:@"shop_id"];
+    
+    [self.navigationController pushViewController:shop animated:YES];
+    
+//    LHTabBarBaseViewController *tab =  (LHTabBarBaseViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+//    
+//    [tab tabBarHidden:YES];
+    
+}
+
+#pragma mark - 
+
+-(void)loginMethod
+{
+    //  xib加载ViewController的方法
+//    LHLoginViewController *showVc = [[LHLoginViewController alloc] initWithNibName:nil bundle:nil];
+    // 从Mainstory中加载
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    LHLoginViewController *loginVc = [sb instantiateViewControllerWithIdentifier:@"LHLoginViewController"];
+    
+    [self.navigationController pushViewController:loginVc animated:YES];
+    
+    
+    LHTabBarBaseViewController *tab = (LHTabBarBaseViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    [tab tabBarHidden:YES];
+}
+
+
+@end
