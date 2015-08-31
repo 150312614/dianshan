@@ -26,7 +26,7 @@
 
 @implementation AppDelegate
 
-
+//1222222222222222221321312312321
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [UMSocialData setAppKey:@"55d190cd67e58e183b0013a8"];
@@ -36,7 +36,7 @@
 //    [WeiboSDK registerApp:@"246174392"];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
+  
     
     //返回通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRoot) name:kEnterVC object:nil];
